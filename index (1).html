@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Boom Link">
+<meta name="theme-color" content="#17102b">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Boom Link</title>
+<style>
+:root{color-scheme:dark;--bg:#17102b;--cd:#251a4a;--ink:#f7f2ff;--mu:#b0a3d8;--a:#ff6aa8;--b:#ffb454;--ok:#7be0a1}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:radial-gradient(120% 60% at 50% -5%,#44247f,var(--bg) 60%) fixed;color:var(--ink);font:16px/1.4 ui-rounded,"SF Pro Rounded",-apple-system,system-ui,sans-serif;padding:calc(env(safe-area-inset-top) + 14px) 14px calc(env(safe-area-inset-bottom) + 24px)}
+main{max-width:520px;margin:auto;display:grid;gap:14px}
+h1{margin:0;font-size:30px;letter-spacing:-.5px}h1 small{display:block;font-size:14px;font-weight:400;color:var(--mu);letter-spacing:0}
+h2{margin:0 0 10px;font-size:18px}
+.card{background:var(--cd);border-radius:22px;padding:16px}
+.tag{background:linear-gradient(150deg,var(--a),var(--b));color:#2a0f33;border-radius:22px;padding:18px}
+.tag .nm{font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-.5px}
+.tag dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:12px 0 0;font-size:15px}.tag dt{opacity:.7}.tag dd{margin:0;font-weight:700}
+input[type=text],input[type=number]{width:100%;font:inherit;color:#2a0f33;background:#ffffffb8;border:0;border-radius:12px;padding:10px 12px;margin-top:10px}
+select{width:100%;font:inherit;color:#2a0f33;background:#ffffffb8;border:0;border-radius:12px;padding:10px;min-height:48px}
+button{font:inherit;color:inherit;border:0;border-radius:14px;padding:12px 10px;background:#34246a;min-height:48px;touch-action:manipulation}
+button:active{transform:scale(.97)}button:focus-visible,input:focus-visible{outline:3px solid #fff}
+.p{background:#2a0f33;color:#fff;font-weight:700;width:100%;margin-top:12px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px}.g .w{grid-column:1/-1}
+.busy button{opacity:.45;pointer-events:none}
+small.n{display:block;color:var(--mu);font-size:13px;margin-top:8px}
+label.s{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0}
+pre{margin:8px 0 0;max-height:150px;overflow:auto;font:12px/1.4 ui-monospace,monospace;color:var(--mu);white-space:pre-wrap}
+</style></head><body>
+<main>
+<h1>Boom Link<small>Habla con tu Furby Boom por sonido</small></h1>
+
+<section class="tag">
+<div class="nm" id="nm">Sin leer aún</div>
+<dl><dt>Apodo</dt><dd id="apv">—</dd><dt>Pelaje</dt><dd id="pt">—</dd><dt>Personalidad</dt><dd id="pr">—</dd>
+<dt>Saciedad</dt><dd id="hu">—</dd><dt>Felicidad</dt><dd id="ha">—</dd><dt>Enfermo</dt><dd id="sk">—</dd></dl>
+<input type="text" id="ap" placeholder="Ponle un apodo (se guarda en este teléfono)" maxlength="24">
+<button class="p" onclick="status()">Leer estado del Furby</button>
+</section>
+
+<section class="card"><h2>Despertar</h2>
+<div class="g"><button onclick="send(820,'despertar')">Despertar</button><button onclick="send(758,'dormir')">Dormir 😴</button></div>
+<small class="n">Acerca el altavoz al pecho del Furby (10–20 cm), volumen al máximo y habitación en silencio.</small></section>
+
+<section class="card"><h2>Nombre del Furby</h2>
+<div class="g"><select id="n1"></select><select id="n2"></select></div>
+<button class="p" style="background:#34246a" onclick="rename()">Poner este nombre</button>
+<button id="rb" style="display:none;width:100%;margin-top:8px" onclick="restore()"></button>
+<small class="n">Repite la secuencia de la app original (896, nombre, 404, nombre) y la comprueba leyendo el estado. Tarda unos 30 s: no muevas el teléfono ni lo alejes del Furby.</small></section>
+
+<section class="card"><h2>Personalidad</h2>
+<div class="g">
+<button onclick="pers(550,'RockStar')">🎸 RockStar</button><button onclick="pers(551,'SweetBelle')">🍬 SweetBelle*</button>
+<button onclick="pers(552,'Glutton')">🍔 Glutton</button><button onclick="pers(553,'ToughGirl')">💪 ToughGirl</button>
+<button class="w" onclick="pers(554,'Princess')">👑 Princess*</button></div>
+<small class="n">Tras enviar, la app lee qué personalidad reporta el Furby. *Etiqueta por verificar: en pruebas, 551 dio Kooky y 554 dio SweetBelle.</small></section>
+
+<section class="card"><h2>Acciones</h2>
+<div class="g"><button onclick="send(229,'cantar')">🎤 Cantar</button><button onclick="send(230,'escondite')">🙈 Escondite</button>
+<button onclick="send(757,'poción de amor')">💖 Poción de amor</button><button onclick="send(236,'curar')">💊 Curar</button>
+<button onclick="send(832,'voz aguda')">Voz aguda</button><button onclick="send(831,'voz normal')">Voz normal</button>
+<button class="w" onclick="send(830,'voz grave')">Voz grave</button></div></section>
+
+<section class="card"><h2>Avanzado</h2>
+<label class="s">Mantener despierto (cada 35 s)<input type="checkbox" id="ka"></label>
+<label class="s">Reforzar tonos agudos<input type="checkbox" id="em" checked></label>
+<input type="number" id="cm" min="0" max="1023" placeholder="Comando manual (0–1023)">
+<button class="p" style="background:#34246a" onclick="manual()">Enviar comando</button>
+<small class="n">Los comandos de nombre (896, 404, 610–649 y 934–1023) se usan desde la tarjeta Nombre.</small>
+<pre id="log"></pre></section>
+</main>
+<script>
+// Protocolo ComAir: basado en la documentación de Hacksby (iafan, MIT) y furbycomm. Código propio.
+const CS="0000 0110 0210 0300 1023 1133 1233 1323 0120 0201 0330 1021 1103 1222 1313 2021 0220 0330 1000 1110 1203 1313 2000 2110 0300 1011 1120 1201 1323 2011 2120 2201 1033 1123 1223 1333 2033 2123 2223 2333 1113 1232 1303 2031 2113 2232 2303 3012 1213 1303 2010 2100 2213 2303 3033 3123 1333 2001 2130 2211 2333 3022 3113 3232".split(" ");
+const F=[16376,16938,18624,18062,17500];
+const N1=["Ah","Bee","Dah","Day","Dee","Doo","Kee","Loo","May","Noo","Tay","Toh","Way"],N2=["Bay","Boh","Boo","Dah","Doh","Doo","Kah","Koh","Tah","Toh"];
+const PAT=["?","Checkerboard","Stripes","Peacock","Zigzags","Triangles","Waves","Hearts","Cubes","Diagonals","Lightning","Christmas","Diamonds","SpringHeart","SpringStar","SpringDiamonds","SpringWaves","SpringHoundstooth","SpringEaster","CrystalYellowToOrange","CrystalOrangeToPink","CrystalPinkToPurple","CrystalGreenToBlue","CrystalPinkToBlue","CrystalRainbow"];
+const PERS=["?","ToughGirl","Kooky","RockStar","SweetBelle","Gobbler"];
+let emph=true;
+const nameOf=i=>i==0?"Sin nombre":i>130?"?":N1[(i-1)/10|0]+"-"+N2[(i-1)%10];
+const pk=v=>[3,v>>4&3,v>>2&3,v&3,...CS[v].split("").map(Number),1,0,3,2];
+function tone(sr,f,g){const n=Math.round(sr*.02),a=new Float32Array(n);for(let i=0;i<n;i++){const x=(i/n-.5)*2*Math.PI;a[i]=Math.sin(2*Math.PI*f*i/sr)*(x?Math.sin(x)/x:1)*g}return a}
+function synth(c,sr){const G=emph?[.7,.7,1,.85,.7]:[1,1,1,1,1],z=s=>new Float32Array(Math.round(sr*s));
+ const pkt=p=>{const o=[tone(sr,F[4],G[4])];for(const s of p)o.push(tone(sr,F[s],G[s]),tone(sr,F[4],G[4]));return o};
+ const parts=[z(.02),...pkt(pk(c>>5)),z(.5),...pkt(pk(c&31|32)),z(.02)];
+ let L=0;parts.forEach(p=>L+=p.length);const o=new Float32Array(L);let q=0;parts.forEach(p=>{o.set(p,q);q+=p.length});return o}
+function win(N){const w=new Float32Array(N);for(let i=0;i<N;i++)w[i]=.5-.5*Math.cos(2*Math.PI*i/(N-1));return w}
+function amp(x,s,N,w,f,sr){const k=2*Math.cos(2*Math.PI*f/sr);let a=0,b=0;for(let i=0;i<N;i++){const v=x[s+i]*w[i]+k*a-b;b=a;a=v}return Math.sqrt(Math.max(0,a*a+b*b-k*a*b))}
+const fq=c=>[c-200,c-100,c+200,c+100,c];
+function align(x,sr,c,t0,span,step,ns){const N=Math.round(sr*.02),w=win(N),fr=fq(c);let best={s:-1,t:0};
+ for(let t=t0-span;t<=t0+span;t+=step){const s0=Math.round(t*sr);if(s0<0||s0+53*N>x.length)continue;let sc=0,n=0;
+  for(let k=0;k<ns*2;k+=2){const a=fr.map(f=>amp(x,s0+k*N,N,w,f,sr));sc+=a[4]/(a[0]+a[1]+a[2]+a[3]+a[4]+1e-9);n++}
+  sc/=n;if(sc>best.s)best={s:sc,t}}return best}
+function digs(x,sr,c,t){const N=Math.round(sr*.02),w=win(N),fr=fq(c).slice(0,4),s0=Math.round(t*sr),o=[];
+ for(let k=1;k<53;k+=2){const a=fr.map(f=>amp(x,s0+k*N,N,w,f,sr));o.push(a.indexOf(Math.max(...a)))}return o}
+const grp=p=>{const v=p[0]<<4|p[1]<<2|p[2];return p.slice(3,7).join("")==CS[v]?v:-1};
+function unpk(p){if(p[0]!=3||p.slice(22).join("")!="1032")return -1;const a=grp(p.slice(1,8)),b=grp(p.slice(8,15)),c=grp(p.slice(15,22));return a<0||b<0||c<0?-1:a<<12|b<<6|c}
+function parse(c1,c2){const r=BigInt(c2)<<18n|BigInt(c1),d=(r&0x3f000fc0n)|((r&0xfc003fn)<<12n)|((r&0xfc003f000n)>>12n);
+ const g=(s,n)=>Number(d>>BigInt(s)&((1n<<BigInt(n))-1n));return{name:g(3,8),pat:g(11,6),per:g(32,3),sick:g(2,1),hap:g(28,4)*10,full:g(24,4)*10}}
+function decodeStatus(x,sr){const N=Math.round(sr*.02),sc=[];
+ for(let t=0;t+1.06<x.length/sr;t+=.01){const r=align(x,sr,17000,t,0,1,27);sc.push([r.s,t])}
+ const picks=[];sc.sort((a,b)=>b[0]-a[0]);
+ for(const [s,t] of sc){if(s<.5||picks.length>=6)break;if(picks.every(p=>Math.abs(p-t)>.3))picks.push(t)}
+ for(const t of picks){const a=align(x,sr,17000,t,.012,.001,27),b=align(x,sr,18000,a.t,.012,.001,27);
+  const c1=unpk(digs(x,sr,17000,a.t).slice(0,26)),c2=unpk(digs(x,sr,18000,b.t).slice(0,26));
+  if(c1>=0&&c2>=0)return parse(c1,c2)}return null}
+//UI
+const $=i=>document.getElementById(i),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const WK="class R extends AudioWorkletProcessor{process(i){const c=i[0][0];if(c)this.port.postMessage(c.slice(0));return true}}registerProcessor('rec',R)";
+let ctx,wk,busy=0,kt;
+function log(m){const l=$("log");l.textContent=new Date().toLocaleTimeString()+"  "+m+"\n"+l.textContent.slice(0,1800)}
+function ac(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state!="running")ctx.resume();return ctx}
+async function play(c){const x=ac(),d=synth(c,x.sampleRate),b=x.createBuffer(1,d.length,x.sampleRate);b.copyToChannel(d,0);const s=x.createBufferSource();s.buffer=b;s.connect(x.destination);s.start();await new Promise(r=>s.onended=r)}
+async function rec(){const x=ac(),st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+ if(!wk){await x.audioWorklet.addModule(URL.createObjectURL(new Blob([WK],{type:"text/javascript"})));wk=1}
+ const s=x.createMediaStreamSource(st),n=new AudioWorkletNode(x,"rec"),z=x.createGain(),ch=[];z.gain.value=0;n.port.onmessage=e=>ch.push(e.data);s.connect(n);n.connect(z);z.connect(x.destination);
+ return{stop:()=>{s.disconnect();n.disconnect();st.getTracks().forEach(t=>t.stop());let L=0;ch.forEach(c=>L+=c.length);const o=new Float32Array(L);let p=0;ch.forEach(c=>{o.set(c,p);p+=c.length});return{x:o,sr:x.sampleRate}}}}
+async function run(fn){if(busy)return;busy=1;document.body.classList.add("busy");try{return await fn()}catch(e){log("Error: "+(e.name=="NotAllowedError"?"permite el micrófono en Ajustes":e.message||e))}finally{busy=0;document.body.classList.remove("busy")}}
+const send=(c,n)=>run(async()=>{log("Enviando "+n+" ("+c+")");await play(c)});
+function show(s){$("nm").textContent=nameOf(s.name);$("pt").textContent=PAT[s.pat]||"?";$("pr").textContent=PERS[s.per]||"?";$("hu").textContent=s.full+"%";$("ha").textContent=s.hap+"%";$("sk").textContent=s.sick?"Sí":"No";log("Estado: "+nameOf(s.name)+", "+(PERS[s.per]||"?"))}
+async function readLoop(){for(let i=1;i<=3;i++){log("Leyendo estado (intento "+i+")…");const r=await rec();await play(427);await sleep(2000);const{x,sr}=r.stop(),s=decodeStatus(x,sr);if(s){show(s);return s}}
+ log("Sin respuesta. Despierta al Furby, acércalo al altavoz y reintenta.")}
+const status=()=>run(readLoop);
+const pers=(c,n)=>run(async()=>{log("Enviando personalidad "+n+" ("+c+")");await play(c);await sleep(1200);await readLoop()});
+const manual=()=>{const c=parseInt($("cm").value);if(!(c>=0&&c<=1023))return log("Comando fuera de rango (0–1023)");send(c,"manual")};
+const nameCmd=i=>i<=40?i+609:i+893;
+for(const[i,a]of[["n1",N1],["n2",N2]])$(i).innerHTML=a.map((n,k)=>`<option value="${k}">${n}</option>`).join("");
+async function setName(idx){for(let t=1;t<=2;t++){log("Nombrando "+nameOf(idx)+" (intento "+t+")");
+ for(const c of[820,896,nameCmd(idx),404,nameCmd(idx)]){await play(c);await sleep(2600)}
+ const s=await readLoop();if(s&&s.name==idx)return true}return false}
+function showRb(){try{const p=+localStorage.getItem("prev");$("rb").style.display=p>0?"block":"none";$("rb").textContent="Restaurar nombre anterior ("+nameOf(p)+")"}catch(e){}}
+const rename=()=>{const idx=$("n1").value*10+ +$("n2").value+1;if(!confirm("¿Cambiar el nombre del Furby a "+nameOf(idx)+"?"))return;
+ run(async()=>{const p=await readLoop();if(!p){log("El Furby no responde: no se cambió nada.");return}
+  try{localStorage.setItem("prev",p.name)}catch(e){}
+  log(await setName(idx)?"Nombre cambiado a "+nameOf(idx)+" ✓":"No se pudo confirmar el cambio. Pulsa «Leer estado» para ver el nombre actual.");showRb()})};
+const restore=()=>{const p=+localStorage.getItem("prev");if(p>0&&confirm("¿Volver a "+nameOf(p)+"?"))run(async()=>{log(await setName(p)?"Nombre restaurado ✓":"No se pudo confirmar.")})};
+showRb();
+$("em").onchange=e=>emph=e.target.checked;
+$("ka").onchange=e=>{clearInterval(kt);if(e.target.checked){ac();kt=setInterval(()=>{if(!busy)send(820,"mantener despierto")},35000)}};
+try{$("ap").value=localStorage.getItem("nick")||"";$("apv").textContent=$("ap").value||"—"}catch(e){}
+$("ap").oninput=e=>{$("apv").textContent=e.target.value||"—";try{localStorage.setItem("nick",e.target.value)}catch(x){}};
+</script></body></html>
